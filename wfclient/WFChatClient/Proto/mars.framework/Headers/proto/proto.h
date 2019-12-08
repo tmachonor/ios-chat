@@ -173,7 +173,7 @@ namespace mars{
         
         class TUserInfo : public TSerializable {
         public:
-            TUserInfo() : gender(0), updateDt(0), type(0) {}
+            TUserInfo() : gender(0), updateDt(0), type(0), deleted(0) {}
             std::string uid;
             std::string name;
             std::string displayName;
@@ -189,6 +189,7 @@ namespace mars{
             std::string groupAlias;
             //0 normal; 1 robot; 2 thing;
             int type;
+            int deleted;
             int64_t updateDt;
             virtual ~TUserInfo() {}
 #if WFCHAT_PROTO_SERIALIZABLE
@@ -638,7 +639,7 @@ namespace mars{
         
         extern int modifyUserSetting(int scope, const std::string &key, const std::string &value, GeneralOperationCallback *callback);
         
-        extern void searchUser(const std::string &keyword, bool puzzy, int page, SearchUserCallback *callback);
+        extern void searchUser(const std::string &keyword, int searchType, int page, SearchUserCallback *callback);
         extern void sendFriendRequest(const std::string &userId, const std::string &reason, GeneralOperationCallback *callback);
         
         extern void loadFriendRequestFromRemote();

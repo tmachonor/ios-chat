@@ -45,9 +45,14 @@
     if (@available(iOS 9.1, *)) {
         self.searchController.obscuresBackgroundDuringPresentation = NO;
     }
-    if (! @available(iOS 13, *)) {
+    
+    if (@available(iOS 13, *)) {
+        self.searchController.searchBar.searchBarStyle = UISearchBarStyleDefault;
+        self.searchController.searchBar.searchTextField.backgroundColor = [WFCUConfigManager globalManager].naviBackgroudColor;
+    } else {
         [self.searchController.searchBar setValue:WFCString(@"Cancel") forKey:@"_cancelButtonText"];
     }
+    
     self.searchController.searchBar.placeholder = WFCString(@"SearchUserHint");
     
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
@@ -140,7 +145,8 @@
     NSString *searchString = [ws.searchController.searchBar text];
     if (searchString.length) {
         [[WFCCIMService sharedWFCIMService] searchUser:searchString
-                                                 fuzzy:YES
+                                            searchType:SearchUserType_General
+                                                  page:0
                                                success:^(NSArray<WFCCUserInfo *> *machedUsers) {
                                                    dispatch_async(dispatch_get_main_queue(), ^{
                                                        ws.searchList = machedUsers;
